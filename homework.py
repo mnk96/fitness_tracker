@@ -1,4 +1,5 @@
 from dataclasses import asdict, dataclass
+from typing import Dict, Type
 
 
 @dataclass
@@ -132,7 +133,7 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list[float]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    training_type: dict[str, type]
+    training_type: Dict[str, Type]
     training_type = {'SWM': Swimming, 'RUN': Running, 'WLK': SportsWalking}
     if workout_type in training_type:
         return training_type[workout_type](*data)
