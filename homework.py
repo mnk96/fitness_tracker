@@ -16,7 +16,7 @@ class InfoMessage:
                     'Ср. скорость: {speed:.3f} км/ч; '
                     'Потрачено ккал: {calories:.3f}.')
 
-    def get_message(self):
+    def get_message(self) -> str:
         return self.INFO_MESSAGE.format(**asdict(self))
 
 
@@ -42,8 +42,7 @@ class Training:
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения """
-        distance = self.get_distance()
-        return distance / self.duration
+        return self.get_distance() / self.duration
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
@@ -124,7 +123,7 @@ class Swimming(Training):
                           / self.M_IN_KM / self.duration)
         return (speed_swimming)
 
-    def get_spent_calories(self):
+    def get_spent_calories(self) -> float:
         calories = ((self.get_mean_speed() + self.CALORIES_MEAN_SPEED_SHIFT)
                     * self.CALORIES_MEAN_SPEED_MULTIPLIER * self.weight
                     * self.duration)
@@ -133,12 +132,13 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: List[float]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    training_type: Dict[str, Type]
-    training_type = {'SWM': Swimming, 'RUN': Running, 'WLK': SportsWalking}
+    training_type: Dict[str, Type[Training]] = {'SWM': Swimming,
+                                                'RUN': Running,
+                                                'WLK': SportsWalking}
     if workout_type in training_type:
         return training_type[workout_type](*data)
     else:
-        raise NotImplementedError('Неизвестный тип тренировки')
+        raise KeyError('Неизвестный тип тренировки')
 
 
 def main(training: Training) -> None:
