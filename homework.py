@@ -57,7 +57,6 @@ class Training:
 
 class Running(Training):
     """Тренировка: бег."""
-    LEN_STEP: float = 0.65
     M_IN_KM: int = 1000
     CALORIES_MEAN_SPEED_MULTIPLIER: int = 18
     CALORIES_MEAN_SPEED_SHIFT: float = 1.79
@@ -73,7 +72,6 @@ class Running(Training):
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
-    LEN_STEP: float = 0.65
     CALORIES_WEIGHT_MULTIPLIER: float = 0.035
     CALORIES_SPEED_HEIGHT_MULTIPLIER: float = 0.029
     SPEED_CONST: float = 0.278
@@ -85,7 +83,7 @@ class SportsWalking(Training):
                  duration: float,
                  weight: float,
                  height: int,
-                 ):
+                 ) -> None:
         super().__init__(action, duration, weight)
         self.height = height
 
@@ -110,7 +108,7 @@ class Swimming(Training):
                  weight: float,
                  length_pool: float,
                  count_pool: float,
-                 ):
+                 ) -> None:
         super().__init__(action, duration, weight)
         self.length_pool = length_pool
         self.count_pool = count_pool
@@ -133,7 +131,7 @@ def read_package(workout_type: str, data: List[int]) -> Training:
     if workout_type in training_type:
         return training_type[workout_type](*data)
     else:
-        raise KeyError('Неизвестный тип тренировки')
+        raise ValueError('Неизвестный тип тренировки')
 
 
 def main(training: Training) -> None:
